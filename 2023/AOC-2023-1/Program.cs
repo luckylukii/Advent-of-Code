@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AOC_2023
+namespace AOC_2023_1
 {
     class Program
     {

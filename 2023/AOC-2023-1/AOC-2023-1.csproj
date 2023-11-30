@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E3EF2C7D-30F3-4E6C-B101-73BFE0E87449}</ProjectGuid>
+    <ProjectGuid>{CB4AF6C2-DF06-4489-885D-AB1DCF56BE1E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AOC_2023</RootNamespace>
-    <AssemblyName>AOC-2023</AssemblyName>
+    <RootNamespace>AOC_2023_1</RootNamespace>
+    <AssemblyName>AOC-2023-1</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
