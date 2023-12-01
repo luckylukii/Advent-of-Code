@@ -16,33 +16,23 @@
         ("eight", "8"),
         ("nine", "9")
     };
-
-    private static List<string> testInputs = new(){
-        "two1nine",
-        "eightwothree",
-        "abcone2threexyz",
-        "xtwone3four",
-        "4nineeightseven2",
-        "zoneight234",
-        "7pqrstsixteen"
-    };
     private static void Main()
     {
         inputs = Reader.ReadFile("C:/C# Projects/Advent-of-Code/2023/AOC-2023-Day1/Inputs.txt");
 
-        for (int i = 0; i < testInputs.Count; i++)
+        for (int i = 0; i < inputs.Count; i++)
         {
-            var replacedInput = testInputs[i];
-            foreach (var item in replace)
-            {
-                replacedInput = replacedInput.Replace(item.Item1, item.Item2);
-            }
+            var replacedInput = inputs[i];
+
+            string first = GetFirstReplacable(replacedInput, out string firstReplacer);
+            string last = GetLastReplacable(replacedInput, out string lastReplacer);
+            if (first != "") replacedInput = replacedInput.Replace(first, firstReplacer);
+            if (last != "") replacedInput = replacedInput.Replace(last, lastReplacer);
 
             var v = replacedInput.Where((char c) => accepted.Contains(c));
             var cA = v.ToArray();
 
             int code = int.Parse(cA[0].ToString() + cA[^1].ToString());
-            Console.WriteLine(code);
             codes.Add(code);
         }
 
@@ -56,6 +46,41 @@
         foreach (var item in codes)
         {
             output += item;
+        }
+        return output;
+    }
+
+    private static string GetFirstReplacable(string stringToCheck, out string replacer)
+    {
+        int first = int.MaxValue;
+        string output = "";
+        replacer = "";
+        foreach (var rep in replace)
+        {
+            int i = stringToCheck.IndexOf(rep.Item1);
+            if (i != -1 && i < first)
+            {
+                first = i;
+                output = rep.Item1;
+                replacer = rep.Item2;
+            }
+        }
+        return output;
+    }
+    private static string GetLastReplacable(string stringToCheck, out string replacer)
+    {
+        int last = int.MinValue;
+        string output = "";
+        replacer = "";
+        foreach (var rep in replace)
+        {
+            int i = stringToCheck.IndexOf(rep.Item1);
+            if (i != -1 && i > last)
+            {
+                last = i;
+                output = rep.Item1;
+                replacer = rep.Item2;
+            }
         }
         return output;
     }
