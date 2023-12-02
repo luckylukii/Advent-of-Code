@@ -6,15 +6,15 @@
         '1', '2', '3', '4', '5', '6', '7', '8', '9'
     };
     private static (string, string)[] replace = new (string, string)[]{
-        ("one", "1"),
-        ("two", "2"),
-        ("three", "3"),
-        ("four", "4"),
-        ("five", "5"),
-        ("six", "6"),
-        ("seven", "7"),
-        ("eight", "8"),
-        ("nine", "9")
+        ("one", "o1e"),
+        ("two", "t2o"),
+        ("three", "th3ee"),
+        ("four", "f4ur"),
+        ("five", "f5ive"),
+        ("six", "s6x"),
+        ("seven", "se7en"),
+        ("eight", "ei8ht"),
+        ("nine", "n9ne")
     };
     private static void Main()
     {
