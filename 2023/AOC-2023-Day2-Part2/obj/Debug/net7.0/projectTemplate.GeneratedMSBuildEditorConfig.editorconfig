@@ -8,6 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = projectTemplate
-build_property.ProjectDir = D:\C# Projects\AOC\Advent-of-Code\2023\AOC-2023-Day2-Part2\
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.ProjectDir = C:\C# Projects\Advent-of-Code\2023\AOC-2023-Day2-Part2\
