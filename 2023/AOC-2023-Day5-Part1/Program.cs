@@ -1,65 +1,106 @@
 ﻿internal static class Program
 {
-    private static string[] seeds;
+    private static List<string> seeds = new();
 
-    private record RangePair(int srcStart, int srcEnd, int destStart, int destEnd);
+    private record RangePair(long srcStart, long srcEnd, long destDiff);
 
     private static RangePair[][] maps;
 
     private static string[] inputs;
     private static void Main()
     {
-        inputs = Reader.ReadFile("C:/C# Projects/Advent-of-Code/2023/AOC-2023-Day5-Part1/Inputs.txt").ToArray();
-        
-        string seed = inputs[0];
-        seed = seed[7..];
-        seeds = seed.Split(' ');
+        InitalizeMaps();
 
-        string[] converted = seeds;
-
-        int lowestLocation = int.MaxValue;
+        string[] converted = seeds.ToArray();
 
         for (int i = 0; i < maps.Length; i++)
         {
-            foreach (string conv in converted)
+            for (int j = 0; j < converted.Length; j++)
             {
-                int convertedValue = int.Parse(conv);
-                if (conv.isInRange(i, out int convert)) convertedValue = convert;
-
-                lowestLocation = Math.Min(lowestLocation, convertedValue);
+                converted[j] = converted[j].Evaluate(i);
             }
         }
+
+        long lowestLocation = converted.GetMinOfArray();
 
         Console.WriteLine(lowestLocation);
         Console.ReadLine();
     }
 
-    private static bool isInRange(this string str, int index, out int converted){
-        int value = int.Parse(str);
-        maps[index]
+    private static string Evaluate(this string str, int index)
+    {
+        long value = long.Parse(str);
+
+        for (int i = 0; i < maps[index].Length; i++)
+        {
+            RangePair range = maps[index][i];
+
+            if (value < range.srcStart || value >= range.srcEnd) continue;
+
+            return (value + range.destDiff).ToString();
+        }
+
+        return value.ToString();
+    }
+
+    private static long GetMinOfArray(this string[] arr)
+    {
+        long min = long.MaxValue;
+        foreach (var item in arr)
+        {
+            min = Math.Min(min, long.Parse(item));
+        }
+        return min;
     }
 
     private static void InitalizeMaps()
     {
+        inputs = Reader.ReadFile("Inputs.txt").ToArray();
+
         string seed = inputs[0];
         seed = seed[7..];
+        string[] splitSeeds = seed.Split(' ');
+        for (int i = 0; i < splitSeeds.Length; i += 2)
+        {
+            (string, string) range = (splitSeeds[i], splitSeeds[i+1]);
+            for (int j = 0; j < int.Parse(range.Item2); j++)
+            {
+                //seeds.Add();
+            }
+        }
+
+        /* Part1
         seeds = seed.Split(' ');
+        */
 
         string[][] mapLines = new string[][]{
-            inputs[3..8],
-            inputs[10..53],
-            inputs[55..94],
-            inputs[96..143],
-            inputs[145..172],
-            inputs[174..182],
-            inputs[184..200]
+            inputs[3..9],
+            inputs[11..54],
+            inputs[56..95],
+            inputs[97..144],
+            inputs[146..173],
+            inputs[175..183],
+            inputs[185..201]
        };
 
-        for (int i = 0; i < maps.Length; i++)
+        maps = new RangePair[mapLines.Length][];
+
+        for (int i = 0; i < mapLines.Length; i++)
         {
-            for (int k = 0; k < maps[i].Length; k++)
+            maps[i] = new RangePair[mapLines[i].Length];
+
+            for (int j = 0; j < mapLines[i].Length; j++)
             {
-                
+                string[] numbers = mapLines[i][j].Split(' ');
+
+                long rangeLength = long.Parse(numbers[2]);
+
+                long sourceStart = long.Parse(numbers[1]);
+                long sourceEnd = sourceStart + rangeLength;
+
+                long destDiff = long.Parse(numbers[0]) - sourceStart;
+
+                maps[i][j] = new RangePair(sourceStart, sourceEnd, destDiff);
             }
         }
     }
