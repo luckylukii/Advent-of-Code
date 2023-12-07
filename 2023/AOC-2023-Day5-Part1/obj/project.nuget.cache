@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PU/MKXvYkeE5jaYh3W6R4mvSWyKKe2q7yoiOiskAPiG5ktGk5Ocu0v0rmaeIfBuvzudesOUDDc81xRdINOn47Q==",
+  "dgSpecHash": "RRHsdSUo8hw3v/rkDwYyEwRf4hwtJt7UmNraLIRsvwbUhlkEUe35rr8ncrp4PNf1SYs6BmoW4MB47bVNNO48Wg==",
   "success": true,
-  "projectFilePath": "D:\\C# Projects\\AOC\\Advent-of-Code\\2023\\AOC-2023-Day5-Part1\\projectTemplate.csproj",
+  "projectFilePath": "C:\\C# Projects\\Advent-of-Code\\2023\\AOC-2023-Day5-Part1\\projectTemplate.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

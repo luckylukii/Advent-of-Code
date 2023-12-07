@@ -21,7 +21,7 @@
             }
         }
 
-        long lowestLocation = converted.GetMinOfArray();
+        long lowestLocation = long.Parse(converted.Min());
 
         Console.WriteLine(lowestLocation);
         Console.ReadLine();
@@ -43,16 +43,6 @@
         return value.ToString();
     }
 
-    private static long GetMinOfArray(this string[] arr)
-    {
-        long min = long.MaxValue;
-        foreach (var item in arr)
-        {
-            min = Math.Min(min, long.Parse(item));
-        }
-        return min;
-    }
-
     private static void InitalizeMaps()
     {
         inputs = Reader.ReadFile("Inputs.txt").ToArray();
@@ -65,13 +55,11 @@
             (string, string) range = (splitSeeds[i], splitSeeds[i+1]);
             for (int j = 0; j < int.Parse(range.Item2); j++)
             {
-                //seeds.Add();
+                seeds.Add(range.Item1 + j);
             }
+            Console.Write("=");
         }
-
-        /* Part1
-        seeds = seed.Split(' ');
-        */
+        Console.WriteLine($"We have {seeds.Count} seeds!");
 
         string[][] mapLines = new string[][]{
             inputs[3..9],
