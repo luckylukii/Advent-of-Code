@@ -1,11 +1,10 @@
 ﻿internal static class Program
 {
-    private record Deck(string cards, long bid);
-    private static char[] cardNumbers = new char[]{
-        'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'
-    };
+    private record Deck(string cards, ulong bid);
+    private static char[] cardNumbers = "AKQJT98765432".ToCharArray();
 
-    private static string[] inputs;
+    private static string[]? inputs;
+
     private static void Main()
     {
         inputs = Reader.ReadFile("Inputs.txt").ToArray();
@@ -15,19 +14,16 @@
         {
             string[] split = item.Split(' ');
 
-            decks.Add(new(split[0], long.Parse(split[1])));
+            ulong bid = ulong.Parse(split[1]);
+            Deck deck = new(split[0], bid);
+            decks.Add(deck);
         }
         List<Deck> sorted = SortCardsByStrength(decks);
-        long result = 0;
+        ulong result = 0;
         for (int i = 0; i < sorted.Count; i++)
         {
-            long rank = i+1;
-            long numToAdd = rank * sorted[i].bid;
-            result += numToAdd;
-            Console.WriteLine($"Rank: {rank}, num: {numToAdd}, Deck: {sorted[i]}, Type: {GetType(sorted[i].cards)}");
-            if (i>0)Console.WriteLine($"              Stronger than previous: {sorted[i].cards.IsStrongerThan(sorted[i-1].cards)}");
+            result += (ulong)(i + 1) * sorted[i].bid;
         }
-       
         Console.WriteLine(result);
         Console.ReadLine();
     }
@@ -48,17 +44,33 @@
         int type2 = GetType(card2);
         if (type1 != type2) return type1 > type2;
 
+        List<char> list = cardNumbers.ToList();
+
         for (int i = 0; i < card1.Length; i++)
         {
-            if (card1[i] != card2[i])
-            {
-                List<char> list = cardNumbers.ToList();
-                return list.IndexOf(card1[i]) < list.IndexOf(card2[i]);
-            }
+            int index1 = list.IndexOf(card1[i]);
+            int index2 = list.IndexOf(card2[i]);
+            
+            if (index1 == index2) continue;
+
+            return index1 < index2;
         }
         return false;
     }
 
+    /// <summary>
+    /// Returns the type of the card as an int
+    /// 
+    /// 1: High Card
+    /// 2: One pair
+    /// 3: Two pair
+    /// 4: Three of a kind
+    /// 5: Full house
+    /// 6: Four of a kind
+    /// 7: Five of a kind
+    /// </summary>
+    /// <param name="card"></param>
+    /// <returns></returns>
     private static int GetType(string card)
     {
         List<int> frequencies = new();
@@ -69,11 +81,10 @@
             frequencies.Add(card.Count((char c) => c == num));
         }
 
+        if (frequencies.Any(f => f == 5)) return 7;
+        if (frequencies.Any(f => f == 4)) return 6;
         for (int i = 0; i < frequencies.Count; i++)
         {
-            if (frequencies[i] == 5) return 7;
-            else if (frequencies[i] == 4) return 6;
-
             for (int j = 0; j < frequencies.Count; j++)
             {
                 if (i == j) continue;
@@ -81,10 +92,10 @@
                 if (frequencies[i] == 3 && frequencies[j] == 2) return 5;
                 else if (frequencies[i] == 2 && frequencies[j] == 2) return 3;
             }
-
-            if (frequencies[i] == 3) return 4;
-            else if (frequencies[i] == 2) return 2;
         }
-        return 1;
+
+        if (frequencies.Any(f => f == 3)) return 4;
+        else if (frequencies.Any(f => f == 2)) return 2;
+        else return 1;
     }
 }

@@ -1,19 +1,20 @@
 ﻿internal static class Program
 {
-    private static List<string> seeds = new();
+    private record MapRange(long srcStart, long srcEnd, long destDiff);
+    private record SeedRange(long start, long length);
 
-    private record RangePair(long srcStart, long srcEnd, long destDiff);
+    private static List<SeedRange> seeds = new();
 
-    private static RangePair[][] maps;
+    private static MapRange[][]? maps;
 
-    private static string[] inputs;
+    private static string[]? inputs;
     private static void Main()
     {
         InitalizeMaps();
 
-        string[] converted = seeds.ToArray();
+        SeedRange[] converted = seeds.ToArray();
 
-        for (int i = 0; i < maps.Length; i++)
+        for (int i = 0; i < maps!.Length; i++)
         {
             for (int j = 0; j < converted.Length; j++)
             {
@@ -21,19 +22,20 @@
             }
         }
 
-        long lowestLocation = long.Parse(converted.Min());
+        long lowestLocation = converted.Min(c => c.start);
 
         Console.WriteLine(lowestLocation);
         Console.ReadLine();
     }
 
-    private static string Evaluate(this string str, int index)
+    private static SeedRange Evaluate(this SeedRange seed, int index)
     {
-        long value = long.Parse(str);
+        /*
+        long value = long.Parse(seed);
 
-        for (int i = 0; i < maps[index].Length; i++)
+        for (int i = 0; i < maps![index].Length; i++)
         {
-            RangePair range = maps[index][i];
+            MapRange range = maps[index][i];
 
             if (value < range.srcStart || value >= range.srcEnd) continue;
 
@@ -41,6 +43,8 @@
         }
 
         return value.ToString();
+        */
+        return new(0, 0);
     }
 
     private static void InitalizeMaps()
@@ -52,14 +56,12 @@
         string[] splitSeeds = seed.Split(' ');
         for (int i = 0; i < splitSeeds.Length; i += 2)
         {
-            (string, string) range = (splitSeeds[i], splitSeeds[i+1]);
-            for (int j = 0; j < int.Parse(range.Item2); j++)
-            {
-                seeds.Add(range.Item1 + j);
-            }
-            Console.Write("=");
+            long seedRangeStart = long.Parse(splitSeeds[i]);
+            long seedsRangeLength = long.Parse(splitSeeds[i + 1]);
+            SeedRange range = new(seedRangeStart, seedsRangeLength);
+        
+            seeds.Add(range);
         }
-        Console.WriteLine($"We have {seeds.Count} seeds!");
 
         string[][] mapLines = new string[][]{
             inputs[3..9],
@@ -71,11 +73,11 @@
             inputs[185..201]
        };
 
-        maps = new RangePair[mapLines.Length][];
+        maps = new MapRange[mapLines.Length][];
 
         for (int i = 0; i < mapLines.Length; i++)
         {
-            maps[i] = new RangePair[mapLines[i].Length];
+            maps[i] = new MapRange[mapLines[i].Length];
 
             for (int j = 0; j < mapLines[i].Length; j++)
             {
@@ -88,7 +90,7 @@
 
                 long destDiff = long.Parse(numbers[0]) - sourceStart;
 
-                maps[i][j] = new RangePair(sourceStart, sourceEnd, destDiff);
+                maps[i][j] = new MapRange(sourceStart, sourceEnd, destDiff);
             }
         }
     }
